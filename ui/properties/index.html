@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LPWAN Multi-RAT Energy Experiments: Device Properties</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"  />
+    <style type="text/css">
+		.body-wrapper{
+			margin-top: 100px;
+		}
+		.logos img{
+			margin-right: 20px;
+		}
+		h1.display-4{
+			font-weight: normal;
+			margin-bottom: 40px;
+			text-align: center;
+		}
+		.top .lead{
+			font-size: 2rem;
+		}
+		hr{
+			border-top: 1px solid #fff;
+		}
+		.top hr{
+			width: 10%;
+			border-top: 1px solid #fff;
+			margin-left: 0px;
+		}
+		.top img{
+			width: 100%;
+			margin-top: 100px;
+		}
+		.top .img-caption{
+			text-align: center;
+			font-size: 1.4rem;
+			margin-top: 20px;
+			margin-bottom: 100px;
+		}
+		.scope{
+			width: 600px;
+			margin: 30px auto;
+		}
+		label{
+			font-size: 1.1rem;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+		.input-group input.text-box-scope{
+			margin-left: 30px !important;
+			background: #30363c; 
+			border: 1px solid #707d8a;
+			border-radius: 4px !important;
+			color: #fff;
+			font-size: 1.1rem;
+			
+		}
+		.select-box-scope{
+			margin-top: 8px;
+		}
+		
+		.text-muted a{
+			color: rgba(0,0,0,0.5);
+		}
+		.text-muted a:hover{
+			color: rgba(0,0,0,0.8);
+		}
+		footer{
+			margin-top: 50px;
+		}
+		.logos{
+			margin: 0px;
+			padding: 0px;
+			border-right: 1px solid #999;
+			margin-right: 30px;
+			padding-right: 10px;
+			cursor: pointer;
+		}
+		.navbar-brand{
+			font-size: 1rem;
+			letter-spacing: 0.1em;
+		}
+		.navbar-brand span{
+			font-weight: 400;
+		}
+		.filter-math-operator-wrapper {
+            margin: 0;
+            padding: 0;
+            min-width: 3rem;
+            border: none;
+        }
+        .filter-math-operator,.filter-relation-operator {
+            border-radius: .4rem 0 0 .4rem ;
+            border-right: none;
+        }
+        
+        .button-wrapper{
+            text-align: right;
+        }
+        
+        @media only screen and (min-width: 992px) {
+            .button-wrapper {
+                text-align: left;
+                margin-top: 2.25rem;
+            }
+        }
+        
+        .section{
+            position:relative;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            color: rgba(0,0,0,0.3);
+            margin-top: 40px;
+        }
+        .section:before {
+            content: "";
+            display: block;
+            border-top: solid 1px rgba(0,0,0,0.2);
+            width: 100%;
+            height: 2px;
+            position: absolute;
+            top: 50%;
+            z-index: 0;
+        }
+        .section span {
+            background: #fff;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .form-group{
+            margin-bottom: 0px;
+        }
+        .filter-relation-operator-wrapper{
+            max-width: 5rem;
+        }
+        .filter-1-relation-operator-wrapper{
+            display: none;
+        }
+        .bi {
+            display: inline-block;
+            vertical-align: -0.125em;
+        }
+        .btn-circle{
+            border-radius: 20px;
+            padding: 6px 10px;
+        }
+        .filter-1 .minus-button{
+            display: none;
+        }
+
+        .box-inner {
+        	font-size: 1.25rem;
+        	/* 20 */
+        	background-color: rgba(0,0,0,0.1);
+        	position: relative;
+        	padding: 50px 20px;
+        	text-align: center;
+        	border-radius: 5px;
+        	color: rgba(0,0,0,0.3);
+        	margin: 30px 0px;
+        }
+        
+        .box-inner.is-dragover {
+        	background-color: rgba(0,0,0,0.2);
+        }
+        
+        .box.has-advanced-upload .box__dragndrop {
+        	display: inline;
+        	
+        }
+        
+        .box.has-advanced-upload .box__icon {
+        	width: 100%;
+        	height: 40px;
+        	fill: rgba(0,0,0,0.3);
+        	display: block;
+        	margin-bottom: 10px;
+        }
+        
+        .box.is-uploading .box__input,
+        .box.is-success .box__input,
+        .box.is-error .box__input {
+        	visibility: hidden;
+        }
+        
+        .box__uploading,
+        .box__success,
+        .box__error {
+        	display: none;
+        }
+        
+        .box.is-uploading .box__uploading,
+        .box.is-success .box__success,
+        .box.is-error .box__error {
+        	display: block;
+        	position: absolute;
+        	top: 50%;
+        	right: 0;
+        	left: 0;
+        	-webkit-transform: translateY( -50%);
+        	transform: translateY( -50%);
+        }
+        
+        .box__uploading {
+        	font-style: italic;
+        }
+        
+        .box__success {
+        	-webkit-animation: appear-from-inside .25s ease-in-out;
+        	animation: appear-from-inside .25s ease-in-out;
+        }
+        
+        @-webkit-keyframes appear-from-inside {
+        	from {
+        		-webkit-transform: translateY( -50%) scale( 0);
+        	}
+        	75% {
+        		-webkit-transform: translateY( -50%) scale( 1.1);
+        	}
+        	to {
+        		-webkit-transform: translateY( -50%) scale( 1);
+        	}
+        }
+        
+        @keyframes appear-from-inside {
+        	from {
+        		transform: translateY( -50%) scale( 0);
+        	}
+        	75% {
+        		transform: translateY( -50%) scale( 1.1);
+        	}
+        	to {
+        		transform: translateY( -50%) scale( 1);
+        	}
+        }
+        
+        .box__restart {
+        	font-weight: 700;
+        }
+        
+        .box__restart:focus,
+        .box__restart:hover {
+        	color: #39bfd3;
+        }
+        
+        .box__file {
+        	width: 0.1px;
+        	height: 0.1px;
+        	opacity: 0;
+        	overflow: hidden;
+        	position: absolute;
+        	z-index: -1;
+        }
+        
+        .box__file+label {
+        	max-width: 80%;
+        	text-overflow: ellipsis;
+        	white-space: nowrap;
+        	cursor: pointer;
+        	display: inline-block;
+        	overflow: hidden;
+        }
+        
+        .box__file+label:hover strong,
+        .box__file:focus+label strong,
+        .box__file.has-focus+label strong {
+        	color: #000;
+        }
+        
+        .box__file:focus+label,
+        .box__file.has-focus+label {
+        	outline: 1px dotted #000;
+        	outline: -webkit-focus-ring-color auto 5px;
+        }
+        
+        .box__file+label * {
+        	/* pointer-events: none; */
+        	/* in case of FastClick lib use */
+        }
+        
+        .box__button {
+        	font-weight: 700;
+        	color: #e5edf1;
+        	background-color: #39bfd3;
+        	display: block;
+        	padding: 8px 16px;
+        	margin: 40px auto 0;
+        }
+        
+        .box__button:hover,
+        .box__button:focus {
+        	background-color: #000;
+        }
+        
+        
+        .moving-static, .moving-moving{
+            display: none;
+        }
+        
+        .btn[type=submit]{
+            margin: 20px 20px 20px 0px;
+        }
+        
+        span.loading, .alert-wrapper .alert-success, .alert-wrapper .alert-danger{
+            display: none;
+        }
+        
+        .is-uploading span.loading{
+            display: inline;
+        }
+        
+        .is-success .alert-wrapper .alert-success{
+            display: block;
+        }
+        
+        .is-error .alert-wrapper .alert-danger{
+            display: block;
+        }
+        
+        footer{
+            padding: 20px 0px;
+        }
+        
+        footer a.btn:hover{
+            color: #fff;
+        }
+        
+        span.rows-affected{
+            display: none;
+        }
+        
+        .form-check label{
+            margin-top: 0px;
+        }
+        
+        .form-check-input{
+            margin-top: 0.5rem;
+        }
+    </style>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+<header>
+  <div class="collapse bg-light" id="navbarHeader">
+	<div class="container">
+	  <div class="row">
+		<div class="col-sm-8 col-md-7 py-4">
+		  <h4>About Dramco</h4>
+		  <p class="text-muted">Continuously driven by questions from and contacts with industrial partners, we cover a broad range of research topics in wireless, mobile and embedded communications. Technical support, advice, training, networking, etc are part of the core business of our research group. </p>
+		</div>
+		<div class="col-sm-4 offset-md-1 py-4">
+		  <h4>Find us on</h4>
+		  <ul class="list-unstyled">
+			<li><a href="https://iiw.kuleuven.be/onderzoek/dramco" target="_blank">KU Leuven</a></li>
+			<li><a href="https://twitter.com/dramco_research" target="_blank">Twitter</a></li>
+			<li><a href="https://github.com/dramco" target="_blank">GitHub</a></li>
+		  </ul>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <div class="navbar navbar-light bg-light">
+	<div class="container d-flex justify-content-between">
+	  <a href="https://dramco.be" class="navbar-brand d-flex align-items-center" target="_blank">
+		<p class="logos" >
+			<img src="https://dramco.be/iot/img/kuleuven.svg" height="25" />
+			<img src="https://dramco.be/iot/img/logo.svg" height="30" />
+		</p>
+		<strong>DRAMCO <span>IoT / 5G</span></strong>
+	  </a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+	</div>
+  </div>
+</header>
+<div class="body-wrapper">
+	<div class="container">
+		<div class="py-5 top">
+			<h1 class="display-4">LPWAN Multi-RAT Energy Experiments<span class="badge badge-secondary">Device Properties</span></h1>
+			<p class="lead"></p>
+		</div>
+	    <form method="post" action="//dramco.be/api/multi-rat/properties/" enctype="multipart/form-data" novalidate class="box">
+	        <h6 class="section"><span>General</span></h6>
+		    <div class="row">
+    		    <div class="col-lg-3 form-group">
+    		        <label for="id">Device ID</label>
+                    <select name="id" id="id" class="form-control">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+    		        <label for="general_location">Scenario</label>
+                    <input type="text" name="general_location" id="general_location"  class="form-control"/>
+                </div>
+            </div>
+            <h6 class="section"><span>Operators</span></h6>
+		    <div class="row">
+    		    <div class="col-lg-3 form-group">
+    		        <label for="nbiot_network">NB-IoT Network</label>
+                    <select name="nbiot_network" id="nbiot_network" class="form-control">
+                      <option value="proximus">Proximus</option>
+                      <option value="orange">Orange</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+    		        <label for="lorawan_network">LoRaWAN Network</label>
+                    <select name="lorawan_network" id="lorawan_network" class="form-control">
+                      <option value="proximus">Proximus</option>
+                      <option value="ttn">TTN</option>
+                    </select>
+                </div>
+            </div>
+            <h6 class="section"><span>Location</span></h6>
+            <div class="row">
+                <div class="col-lg-3 form-group">
+    		        <label for="general_level">Level</label>
+                    <select name="general_level" id="general_level" class="form-control">
+                      <option value="-128">Outdoor</option>
+                      <option value="-3">-5</option>
+                      <option value="-2">-4</option>
+                      <option value="-3">-3</option>
+                      <option value="-2">-2</option>
+                      <option value="-1">-1</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+    		        <label for="general_environment">Environment</label>
+                    <select name="general_environment" id="general_environment" class="form-control">
+                      <option value="urban">Urban</option>
+                      <option value="rural">Rural</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group">
+    		        <label for="general_moving">Moving</label>
+                    <select name="general_moving" id="general_moving" class="form-control">
+                      <option value="0">Static</option>
+                      <option value="1">Moving</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 form-group moving-static">
+                    <label for="general_coordinates">Coordinates</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="general_coordinates" id="general_coordinates" class="form-control"/>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="get-coordinates">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999zm2.493 8.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.319 1.319 0 0 0-.37.265.301.301 0 0 0-.057.09V14l.002.008a.147.147 0 0 0 .016.033.617.617 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.619.619 0 0 0 .146-.15.148.148 0 0 0 .015-.033L12 14v-.004a.301.301 0 0 0-.057-.09 1.318 1.318 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465-1.281 0-2.462-.172-3.34-.465-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+    		        
+                </div>
+            </div>
+            <div class="box-inner moving-moving">
+                <div class="box__input">
+                    <svg class="box__icon" xmlns="http://www.w3.org/2000/svg" width="50" height="43" viewBox="0 0 50 43">
+                        <path d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z" />
+                    </svg>
+                    <input type="file" name="fileToUpload" id="file" class="box__file" />
+                    <label for="file" class="file-label"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+                    
+                </div>
+                <div class="box__uploading">Uploading&hellip;</div>
+                <div class="box__success">Done!</div>
+                <div class="box__error">Error! <span></span>. </div> 
+            </div>
+            <div class="form-check upload-advanced-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkmoving" name="checkmoving" checked>
+                <label class="form-check-label" for="checkmoving" >
+                    <small>Check moving value when crosschecking locations <span class="badge badge-secondary">advanced</span></small>
+                </label>
+            </div>
+            <h6 class="section"></h6>
+            <button class="btn btn-primary" type="submit">Submit</button> 
+            <span class="loading">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:#fff;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                    </circle>
+                </svg>
+            </span>
+            <div class="alert-wrapper">
+                
+                <div class="alert alert-success" role="alert">
+                    Upload was successful. <span class="rows-affected"><span class="value"></span> measurement locations have been updated.</span>
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    Upload has failed, please try again. 
+                </div>
+            </div>
+        </form>
+     </div>
+</div>
+<footer class="text-muted bg-light">
+  <div class="container">
+	<p><a href="../" class="btn btn-outline-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+          <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+        </svg>
+        Back to graph
+    </a></p>
+	<p><a href="https://iiw.kuleuven.be/gent" target="_blank">KU Leuven Technologiecampus Gent</a>, <a href="https://dramco.be" target="_blank">Dramco</a>, <a href="https://www.kuleuven.be/wieiswie/nl/person/00105303" target="_blank">Guus Leenders</a>. </p>
+  </div>
+</footer>
+
+<script>
+    var properties = Array(); 
+    
+    function loadProperties(selectedID = 0){
+        $.getJSON( "//dramco.be/api/multi-rat/properties/", function( data ) {
+            properties = Array.from(data);
+            var items = [];
+            lastId = 0;
+            $.each( data, function( key, val ) {
+                items.push( "<option value='" + val["id"] + "'>" + val["id"] + "</option>" );
+                lastId = val["id"];
+            });
+            lastId++;
+            items.push( "<option value='" + lastId + "'>" + lastId + " (New)</option>" );
+            $("#id").html(items.join(""));
+            $("#id").val(selectedID);
+            loadForm();
+        });
+    }
+    function loadForm(){
+        var selectedID = $("#id").val();
+        
+        $.each( properties[selectedID], function( key, val ) {
+            if(val!="id")
+                $("#" + key).val(val);
+        });
+        
+        processMoving();
+    }
+    function processMoving(){
+        if( $("#general_moving").val()==0){
+            $(".moving-moving, .upload-advanced-check").hide();
+            $(".moving-static").show();
+        }else{
+            $(".moving-static").hide();
+            $(".moving-moving, .upload-advanced-check").show();
+        }
+    }
+    $( document ).ready(function() {
+        
+        $("#id").change(function(){
+            loadForm();
+        });
+        
+        $("#general_moving").change(function(){
+            processMoving();
+        });
+        loadProperties();
+        
+    });
+</script>
+
+<script>
+    // This is the dragndrop upload script: https://css-tricks.com/examples/DragAndDropFileUploading/?submit-on-demand
+    
+	'use strict';
+
+	;( function ( document, window, index ){
+		// feature detection for drag&drop upload
+		var isAdvancedUpload = function(){
+				var div = document.createElement( 'div' );
+				return ( ( 'draggable' in div ) || ( 'ondragstart' in div && 'ondrop' in div ) ) && 'FormData' in window && 'FileReader' in window;
+			}();
+
+
+		// applying the effect for every form
+		var forms = document.querySelectorAll( '.box' );
+		Array.prototype.forEach.call( forms, function( form ){
+			var input		 = form.querySelector( 'input[type="file"]' ),
+				label		 = form.querySelector( 'label.file-label' ),
+				errorMsg	 = form.querySelector( '.box__error span' ),
+				restart		 = form.querySelectorAll( '.box__restart' ),
+				droppedFiles = false,
+				showFiles	 = function( files ){
+				    console.log(files);
+					label.innerHTML  = "<strong>"+files[0].name + "</strong> selected.";
+				},
+				triggerFormSubmit = function(){
+					var event = document.createEvent( 'HTMLEvents' );
+					event.initEvent( 'submit', true, false );
+					form.dispatchEvent( event );
+				};
+
+			// letting the server side to know we are going to make an Ajax request
+			var ajaxFlag = document.createElement( 'input' );
+			ajaxFlag.setAttribute( 'type', 'hidden' );
+			ajaxFlag.setAttribute( 'name', 'ajax' );
+			ajaxFlag.setAttribute( 'value', 1 );
+			form.appendChild( ajaxFlag );
+
+			// automatically submit the form on file select
+			input.addEventListener( 'change', function( e ){
+				showFiles( e.target.files );
+
+				
+			});
+
+			// drag&drop files if the feature is available
+			if( isAdvancedUpload ){
+				form.classList.add( 'has-advanced-upload' ); // letting the CSS part to know drag&drop is supported by the browser
+
+				[ 'drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop' ].forEach( function( event ){
+					$(".box-inner").on( event, function( e ){
+						// preventing the unwanted behaviours
+						e.preventDefault();
+						e.stopPropagation();
+					});
+				});
+				[ 'dragover', 'dragenter' ].forEach( function( event ){
+					$(".box-inner").on( event, function()
+					{
+						$(this).addClass( 'is-dragover' );
+					});
+				});
+				[ 'dragleave', 'dragend', 'drop' ].forEach( function( event ){
+					$(".box-inner").on( event, function()
+					{
+						$(this).addClass( 'is-dragover' );
+					});
+				});
+				$(".box-inner").on( 'drop', function( e ){
+					droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
+					showFiles( droppedFiles );
+
+				});
+			}
+
+
+			// if the form was submitted
+			form.addEventListener( 'submit', function( e ){
+				// preventing the duplicate submissions if the current one is in progress
+				if( form.classList.contains( 'is-uploading' ) ) return false;
+
+				form.classList.add( 'is-uploading' );
+				
+				$(".box .btn[type=submit]").attr("disabled", "disabled");
+				form.classList.remove( 'is-error' );
+				form.classList.remove( 'is-success' );
+
+				if( isAdvancedUpload ){ // ajax file upload for modern browsers
+					e.preventDefault();
+
+					// gathering the form data
+					var ajaxData = new FormData( form );
+					if( droppedFiles ){
+						Array.prototype.forEach.call( droppedFiles, function( file ){
+							ajaxData.append( input.getAttribute( 'name' ), file );
+						});
+					}
+                    
+					// ajax request
+					var ajax = new XMLHttpRequest();
+					ajax.open( form.getAttribute( 'method' ), form.getAttribute( 'action' ), true );
+
+					ajax.onload = function(){
+						form.classList.remove( 'is-uploading' );
+						if( ajax.status >= 200 && ajax.status < 400 ){
+							var data = JSON.parse( ajax.responseText );
+							form.classList.add( data.success == true ? 'is-success' : 'is-error' );
+							console.log(data.affectedRows);
+							if('affectedRows' in data){
+							    $("span.rows-affected .value").text(data.affectedRows);
+							    $("span.rows-affected").show();
+							}
+							if( !data.success ) errorMsg.textContent = data.error;
+						}
+						else alert( 'Error. Please, contact the webmaster!' );
+						$(".box .btn[type=submit]").removeAttr("disabled");
+						window.scrollTo(0,document.body.scrollHeight);
+						window.setTimeout(function(){
+						    form.classList.remove( 'is-error', 'is-success' );
+						    $("span.rows-affected").hide();
+						}, 2500);
+						loadProperties($("#id").val());
+					};
+
+					ajax.onerror = function(){
+						form.classList.remove( 'is-uploading' );
+						alert( 'Error. Please, try again!' );
+						$(".box .btn[type=submit]").removeAttr("disabled");
+						window.scrollTo(0,document.body.scrollHeight);
+						window.setTimeout(function(){
+						    form.classList.remove( 'is-error', 'is-success' );
+						    $("span.rows-affected").hide();
+						}, 2500);
+						loadProperties($("#id").val());
+					};
+
+					ajax.send( ajaxData );
+				}
+				else {// fallback Ajax solution upload for older browsers
+					var iframeName	= 'uploadiframe' + new Date().getTime(),
+						iframe		= document.createElement( 'iframe' );
+
+						$iframe		= $( '<iframe name="' + iframeName + '" style="display: none;"></iframe>' );
+
+					iframe.setAttribute( 'name', iframeName );
+					iframe.style.display = 'none';
+
+					document.body.appendChild( iframe );
+					form.setAttribute( 'target', iframeName );
+
+					iframe.addEventListener( 'load', function()
+					{
+						var data = JSON.parse( iframe.contentDocument.body.innerHTML );
+						form.classList.remove( 'is-uploading' )
+						form.classList.add( data.success == true ? 'is-success' : 'is-error' )
+						form.removeAttribute( 'target' );
+						if( !data.success ) errorMsg.textContent = data.error;
+						iframe.parentNode.removeChild( iframe );
+					});
+				}
+			});
+
+			// Firefox focus bug fix for file input
+			input.addEventListener( 'focus', function(){ input.classList.add( 'has-focus' ); });
+			input.addEventListener( 'blur', function(){ input.classList.remove( 'has-focus' ); });
+            
+            $("#get-coordinates").click(function(){
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                }
+            });
+            
+            function showPosition(position) {
+                $("#general_coordinates").val("" + position.coords.latitude + ", " + position.coords.longitude)
+            }
+		});
+	}( document, window, 0 ));
+
+</script>
+
+</body>
+</html>

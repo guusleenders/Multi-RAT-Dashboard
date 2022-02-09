@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Multi-RAT testing system</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"  />
+        <style type="text/css">
+    		.body-wrapper{
+    			margin-top: 100px;
+    		}
+    		.logos img{
+				margin-right: 20px;
+			}
+    		h1.display-4{
+    			font-weight: normal;
+    			margin-bottom: 40px;
+    			text-align: center;
+    		}
+    		.top .lead{
+    			font-size: 2rem;
+    		}
+    		hr{
+    			border-top: 1px solid #fff;
+    		}
+    		.top hr{
+    			width: 10%;
+    			border-top: 1px solid #fff;
+    			margin-left: 0px;
+    		}
+    		.top img{
+    			width: 100%;
+    			margin-top: 100px;
+    		}
+    		.top .img-caption{
+    			text-align: center;
+    			font-size: 1.4rem;
+    			margin-top: 20px;
+    			margin-bottom: 100px;
+    		}
+    		.scope{
+    			width: 600px;
+    			margin: 30px auto;
+    		}
+    		label{
+    			font-size: 1.1rem;
+    			margin-top: 10px;
+    			margin-bottom: 0px;
+    		}
+    		.input-group input.text-box-scope{
+    			margin-left: 30px !important;
+    			background: #30363c; 
+    			border: 1px solid #707d8a;
+    			border-radius: 4px !important;
+    			color: #fff;
+    			font-size: 1.1rem;
+    			
+    		}
+    		.select-box-scope{
+    			margin-top: 8px;
+    		}
+    		
+    		.text-muted a{
+    			color: #6c757d;
+    		}
+    		.text-muted a:hover{
+    			color: ##212529;
+    		}
+    		footer{
+    			margin-top: 50px;
+    		}
+    		.logos{
+				margin: 0px;
+				padding: 0px;
+				border-right: 1px solid #999;
+				margin-right: 30px;
+				padding-right: 10px;
+				cursor: pointer;
+			}
+			.navbar-brand{
+				font-size: 1rem;
+				letter-spacing: 0.1em;
+			}
+			.navbar-brand span{
+				font-weight: 400;
+			}
+			.filter-math-operator-wrapper {
+                margin: 0;
+                padding: 0;
+                min-width: 3rem;
+                border: none;
+            }
+            .filter-math-operator,.filter-relation-operator {
+                border-radius: .4rem 0 0 .4rem ;
+                border-right: none;
+            }
+            
+            .button-wrapper{
+                text-align: right;
+            }
+            
+            @media only screen and (min-width: 992px) {
+                .button-wrapper {
+                    text-align: left;
+                    margin-top: 2.25rem;
+                }
+            }
+            
+            .section{
+                position:relative;
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 12px;
+                color: rgba(0,0,0,0.3);
+                margin-top: 40px;
+            }
+            .section:before {
+                content: "";
+                display: block;
+                border-top: solid 1px rgba(0,0,0,0.2);
+                width: 100%;
+                height: 2px;
+                position: absolute;
+                top: 50%;
+                z-index: 0;
+            }
+            .section span {
+                background: #fff;
+                padding: 0 10px;
+                position: relative;
+                z-index: 1;
+            }
+            .form-group{
+                margin-bottom: 0px;
+            }
+            .filter-relation-operator-wrapper{
+                max-width: 5rem;
+            }
+            .filter-1-relation-operator-wrapper{
+                display: none;
+            }
+            .bi {
+                display: inline-block;
+                vertical-align: -0.125em;
+            }
+            .btn-circle{
+                border-radius: 20px;
+                padding: 6px 10px;
+            }
+            .filter-1 .minus-button{
+                display: none;
+            }
+            footer{
+                padding: 20px 0px;
+            }
+            footer a.btn:hover{
+                color: #fff;
+            }
+            footer a.btn svg{
+                margin-right: 5px;
+            }
+            .last-received-copy{
+                display: none;
+            }
+            .last-technologies .badge{
+                margin-right: 4px;
+            }
+    	</style>
+	
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.0.0-rc.1/plotly.min.js'></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</head>
+
+	<body class="text-black">
+	    <header>
+		  <div class="collapse bg-light" id="navbarHeader">
+			<div class="container">
+			  <div class="row">
+				<div class="col-sm-8 col-md-7 py-4">
+				  <h4>About Dramco</h4>
+				  <p class="text-muted">Continuously driven by questions from and contacts with industrial partners, we cover a broad range of research topics in wireless, mobile and embedded communications. Technical support, advice, training, networking, etc are part of the core business of our research group. </p>
+				</div>
+				<div class="col-sm-4 offset-md-1 py-4">
+				  <h4>Find us on</h4>
+				  <ul class="list-unstyled">
+					<li><a href="https://iiw.kuleuven.be/onderzoek/dramco" target="_blank">KU Leuven</a></li>
+					<li><a href="https://twitter.com/dramco_research" target="_blank">Twitter</a></li>
+					<li><a href="https://github.com/dramco" target="_blank">GitHub</a></li>
+				  </ul>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="navbar navbar-light bg-light">
+			<div class="container d-flex justify-content-between">
+			  <a href="https://dramco.be" class="navbar-brand d-flex align-items-center" target="_blank">
+				<p class="logos" >
+					<img src="https://dramco.be/iot/img/kuleuven.svg" height="25" />
+					<img src="https://dramco.be/iot/img/logo.svg" height="30" />
+				</p>
+				<strong>DRAMCO <span>IoT / 5G</span></strong>
+			  </a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+			</div>
+		  </div>
+		</header>
+	    <div class="body-wrapper">
+    		<div class="container">
+    			<div class="py-5 top">
+    				<h1 class="display-4">LPWAN Multi-RAT Energy Experiments</h1>
+    				<p class="lead"></p>
+    			</div>
+    			<form id="graphSelector">
+    			    <h6 class="section"><span>Technology</span></h6>
+        			<div class="row">
+            		    <div class="col-lg-3 form-group">
+            		        <label for="technology">LPWAN Technology</label>
+        	                <select name="technology" id="technology" class="form-control">
+                              <option value="nbiot">NB-IoT</option>
+                              <option value="sigfox">Sigfox</option>
+                              <option value="lorawan">LoRaWAN</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h6 class="section"><span>Filters</span></h6>
+                    <div class="row filter-1 filter">
+                        <div class="col-lg-3 form-group">
+            		        <label for="filter-1-name">Field</label>
+            		        <div class="input-group-temp">
+            		            <div class="filter-relation-operator-wrapper filter-1-relation-operator-wrapper">
+                    		        <select class="form-control filter-1-relation-operator filter-relation-operator">
+                                        <option value="and" selected>And</option>
+                                        <option value="or">Or</option>
+                                    </select>
+                                </div>
+                                <select name="filter-1-name" id="filter-1-name" class="form-control filter-name filter-1-name">
+                                    <option value="time" class="for-nbiot for-lorawan for-sigfox filter-range">Timestamp</option>
+                                    <option value="general_deviceID" class="for-nbiot for-lorawan for-sigfox filter-select">Device ID</option>
+                                    <option value="general_location" class="for-nbiot for-lorawan for-sigfox filter-select">Location</option>
+                                    <option value="general_moving" class="for-nbiot for-lorawan for-sigfox filter-select">Moving</option>
+                                    <option value="general_level" class="for-nbiot for-lorawan for-sigfox filter-select">Level</option>
+                                    <option value="general_environment" class="for-nbiot for-lorawan for-sigfox filter-select">Environment</option>
+                                    <option value="general_speed" class="for-nbiot for-lorawan for-sigfox filter-range">Speed</option>
+                                    <option value="technology_network" class="for-nbiot for-lorawan filter-select">Network</option>
+                                    <option value="technology_energy" class="for-nbiot for-lorawan for-sigfox filter-range">Energy [uWh]</option>
+                                    <option value="technology_payloadSize" class="for-nbiot for-lorawan for-sigfox filter-range">Payload Size [B]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <div class="filter-value-select-wrapper" style="display: none">
+                		        <label for="filter-1-value-select">Value</label>
+                		        <div class="form-group">
+                                    <select name="filter-1-value-select" id="filter-1-value-select" class="form-control filter-value filter-value-select filter-1-value-select" >
+                                        <option value="empty" class="for-nbiot for-lorawan for-sigfox" selected>Empty</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="filter-value-range-wrapper" style="display: none">
+                		        <label for="filter-1-value-range">Range</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="filter-math-operator-wrapper">
+                                            <select class="form-control filter-1-math-operator filter-math-operator">
+                                                <option value="leq" selected>&leq;</option>
+                                                <option value="geq">&geq;</option>
+                                                <option value="eq">=</option>
+                                                <option value="neq" selected>&ne;</option>
+                                            </select>
+                                        </div>
+                                        <input id="filter-1-value-range" class="form-control filter-value filter-value-range filter-1-value-range" type="text" placeholder="Filter" name="filter-1-value-range"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group button-wrapper">
+                            <a class="btn btn-outline-danger minus-button" href="#" role="button" data-filter="filter-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"  class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                </svg>
+                            </a>
+                            <a class="btn btn-outline-primary plus-button" href="#" role="button" data-filter="filter-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <h6 class="section"><span>Graph settings</span></h6>
+                    <div class="row">
+                        <div class="col-lg-3 form-group">
+            		        <label for="graph-type">Graph Type</label>
+                            <select name="graph-type" id="graph-type" class="form-control graph-type">
+                                <option value="scatter" class="" selected>Scatter</option>
+                                <option value="boxplot" class="">Box plot</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 form-group for-graph for-scatter ">
+            		        <label for="xaxis">X Axis</label>
+                            <select name="xaxis" id="xaxis" class="form-control axis">
+                                <option value="timeAbs" class="for-nbiot for-lorawan for-sigfox" >Timestamp</option>
+                                <option value="location" class="for-nbiot for-lorawan for-sigfox">Scenario</option>
+                                <option value="energy" class="for-nbiot for-lorawan for-sigfox">Energy [uWh]</option>
+                                <option value="energyperbyte" class="for-nbiot for-lorawan for-sigfox">Energy per byte [uWh/B]</option>
+                                <option value="payloadSize" class="for-nbiot for-lorawan for-sigfox selected">Payload size [B]</option>
+                                <optgroup label="Conditions">
+                                    <option value="conditions.celevel" class="for-nbiot">CE Level</option>
+                                    <option value="conditions.qcsq.rsrp" class="for-nbiot">RSRP</option>
+                                    <option value="conditions.qcsq.rsrq" class="for-nbiot">RSRQ</option>
+                                    <option value="conditions.qcsq.rssi" class="for-nbiot">RSSI</option>
+                                    <option value="conditions.qcsq.sinr" class="for-nbiot">SINR</option>
+                                    <option value="conditions.power" class="for-sigfox for-lorawan">Power</option>
+                                    <option value="conditions.data_rate" class="for-lorawan">Data Rate</option>
+                                    <option value="conditions.adr" class="for-lorawan">ADR</option>
+                                </optgroup>
+                                <option value="initStatus" class="for-nbiot for-lorawan for-sigfox">Init Status</option>
+                                <option value="closeStatus" class="for-nbiot">Close Status</option>
+                                <option value="closeTime" class="for-nbiot">Close Time [ms]</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 form-group for-graph for-scatter for-boxplot">
+            		        <label for="yaxis">Y Axis</label>
+                            <select name="yaxis" id="yaxis" class="form-control axis">
+                              <option value="timeAbs" class="for-nbiot for-lorawan for-sigfox">Timestamp</option>
+                              <option value="location" class="for-nbiot for-lorawan for-sigfox">Scenario</option>
+                              <option value="energy" class="for-nbiot for-lorawan for-sigfox" >Energy [uWh]</option>
+                              <option value="energyperbyte" class="for-nbiot for-lorawan for-sigfox selected">Energy per byte [uWh/B]</option>
+                                <option value="payloadSize" class="for-nbiot for-lorawan for-sigfox">Payload size [B]</option>
+                                <optgroup label="Conditions">
+                                    <option value="conditions.celevel" class="for-nbiot">CE Level</option>
+                                    <option value="conditions.qcsq.rsrp" class="for-nbiot">RSRP</option>
+                                    <option value="conditions.qcsq.rsrq" class="for-nbiot">RSRQ</option>
+                                    <option value="conditions.qcsq.rssi" class="for-nbiot">RSSI</option>
+                                    <option value="conditions.qcsq.sinr" class="for-nbiot">SINR</option>
+                                    <option value="conditions.power" class="for-sigfox for-lorawan">Power</option>
+                                    <option value="conditions.data_rate" class="for-lorawan">Data Rate</option>
+                                    <option value="conditions.adr" class="for-lorawan">ADR</option>
+                                </optgroup>
+                                <option value="initStatus" class="for-nbiot for-lorawan for-sigfox">Init Status</option>
+                                <option value="closeStatus" class="for-nbiot">Close Status</option>
+                                <option value="closeTime" class="for-nbiot">Close Time [ms]</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 form-group for-graph for-scatter">
+            		        <label for="zaxis">Z Axis (Color)</label>
+                            <select name="zaxis" id="zaxis" class="form-control axis">
+                                <option value="timeAbs" class="for-nbiot for-lorawan for-sigfox" >Timestamp</option>
+                                <option value="location" class="for-nbiot for-lorawan for-sigfox" >Scenario</option>
+                                <option value="energy" class="for-nbiot for-lorawan for-sigfox">Energy [uWh]</option>
+                                <option value="energyperbyte" class="for-nbiot for-lorawan for-sigfox">Energy per byte [uWh/B]</option>
+                                <option value="payloadSize" class="for-nbiot for-lorawan for-sigfox selected">Payload size [B]</option>
+                                <optgroup label="Conditions">
+                                    <option value="conditions.celevel" class="for-nbiot">CE Level</option>
+                                    <option value="conditions.qcsq.rsrp" class="for-nbiot">RSRP</option>
+                                    <option value="conditions.qcsq.rsrq" class="for-nbiot">RSRQ</option>
+                                    <option value="conditions.qcsq.rssi" class="for-nbiot">RSSI</option>
+                                    <option value="conditions.qcsq.sinr" class="for-nbiot">SINR</option>
+                                    <option value="conditions.power" class="for-sigfox for-lorawan">Power</option>
+                                    <option value="conditions.data_rate" class="for-lorawan">Data Rate</option>
+                                    <option value="conditions.adr" class="for-lorawan">ADR</option>
+                                </optgroup>
+                                <option value="initStatus" class="for-nbiot for-lorawan for-sigfox">Init Status</option>
+                                <option value="closeStatus" class="for-nbiot">Close Status</option>
+                                <option value="closeTime" class="for-nbiot">Close Time [ms]</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                    		<div id='myDiv'>
+                    		</div>
+            		    </div>
+            		    <div class="col-lg-12">
+                    		Processed measurements: 
+                    		<span class="number-measurements">
+                    		    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;" width="14px" height="14px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                    <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                    </circle>
+                                </svg>
+                    		</span>, of which 
+                    		<span class="number-callbacks">
+                    		    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;" width="14px" height="14px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                    <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                    </circle>
+                                </svg>
+                    		</span> 
+                    		received a callback 
+                    		(<span class="number-percentage">
+                    		    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;" width="14px" height="14px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                    <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                    </circle>
+                                </svg>
+                    		</span>%).
+            		    </div>
+            		</div>
+        		</form>
+    		</div>
+    	</div>
+    	<footer class="text-muted bg-light">
+    	  <div class="container">
+    		<p><a href="properties/" class="btn btn-outline-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                  <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                </svg>
+                Set properties of devices
+            </a></p>
+            <div>
+                Last measurements: 
+                <ul> 
+                    <li class="last-received-copy">Device <span class="last-received-deviceID"></span>: 
+                        <span class="last-received">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;" width="14px" height="14px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                            </circle>
+                        </svg>
+                        </span> <span class="last-technologies"></span> | 
+                        # measurements in last/active session:
+                        <span class="last-received-number">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;" width="14px" height="14px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <circle cx="50" cy="50" fill="none" stroke="#555" stroke-width="16" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+                                  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                </circle>
+                            </svg>
+                        </span>
+                        
+                    </li>
+                </ul>
+                
+            </div>
+    		<p><a href="https://iiw.kuleuven.be/gent" target="_blank">KU Leuven Technologiecampus Gent</a>, <a href="https://dramco.be" target="_blank">Dramco</a>, <a href="https://www.kuleuven.be/wieiswie/nl/person/00105303" target="_blank">Guus Leenders</a>. </p>
+    	  </div>
+        </footer>
+        
+        <div class="temp" style="display: none"></div>
+
+	    
+		<script type="text/javascript">
+			var datax = [];
+			var datay = [];
+			
+			var filterNumber = 1;
+			
+            function timeSince(date) {
+                var seconds = Math.floor((new Date() - date) / 1000);
+                var interval = seconds / 31536000;
+                if (interval > 1) {
+                    if (Math.floor(interval) > 1)
+                        return Math.floor(interval) + " years";
+                    else
+                        return Math.floor(interval) + " year";
+                }
+                interval = seconds / 2592000;
+                if (interval > 1) {
+                    if (Math.floor(interval) > 1)
+                        return Math.floor(interval) + " months";
+                    else
+                        return Math.floor(interval) + " month";
+                }
+                interval = seconds / 86400;
+                if (interval > 1) {
+                    if (Math.floor(interval) > 1)
+                        return Math.floor(interval) + " days";
+                    else
+                        return Math.floor(interval) + " day";
+                }
+                interval = seconds / 3600;
+                if (interval > 1) {
+                    if (Math.floor(interval) > 1)
+                        return Math.floor(interval) + " hours";
+                    else
+                        return Math.floor(interval) + " hour";
+                }
+                interval = seconds / 60;
+                if (interval > 1) {
+                    if (Math.floor(interval) > 1)
+                        return Math.floor(interval) + " minutes";
+                    else
+                        return Math.floor(interval) + " minute";
+                }
+                if (Math.floor(seconds) > 1)
+                        return Math.floor(seconds) + " seconds";
+                    else
+                        return Math.floor(seconds) + " second";
+            }
+            
+            var currentIds = new Array();
+            
+            function updateLastReceivedPageLoad(){
+                var bootID = 0;
+                var deviceID = 0;
+                $.ajax({
+                    url: "//api.dramco.be/multi-rat/",
+                    dataType: 'json',
+                    data: { values: "general_deviceID" },
+                    async: false,
+                    success: function( data ) {
+                        currentIds = Array.from(data);
+                        
+                        $(".last-received-device").remove();
+                        
+                        $.each( data, function( key, val ) {
+
+                            $(".last-received-copy").clone().insertAfter(".last-received-copy").addClass("last-received-device").addClass("last-received-"+val).removeClass("last-received-copy");
+                        });
+                        
+                        updateLastReceived();
+                        
+                    }
+                });
+            }
+            
+            function updateLastReceived(){
+                $.each( currentIds, function( key, val ) {
+                    f = [{
+                            name: "general_deviceID", 
+                            math_operator: "",
+                            value: val, 
+                            relation_operator: "and"
+                        }];
+
+                    _filterObjectListJSON = JSON.stringify(f);
+                    
+                    $(".last-received-"+val+" .last-received-deviceID").text(val);
+                    $.getJSON( "https://dramco.be/api/multi-rat/?limit=1", {filter: _filterObjectListJSON }, function( data ) {
+                        var d = new Date(data[0]["time"]);
+                        var dString = ""+ d.getDate() +"/"+ (d.getMonth()+1) +"/"+ d.getFullYear() +" "+ d.getHours() +":"+ d.getMinutes();
+                        dString += " ("+ timeSince(d) + " ago)";
+                        
+                        $(".last-received-"+val+" .last-received").text(dString);
+                        var technologies = "";
+                        if(data[0]["lorawan"]["callback"] > 0){
+                            technologies += "<span class=\"badge badge-secondary\">LoRaWAN</span>"
+                        }
+                        if(data[0]["nbiot"]["callback"] > 0){
+                            technologies += "<span class=\"badge badge-secondary\">NB-IoT</span>"
+                        }
+                        if(data[0]["sigfox"]["callback"] > 0){
+                            technologies += "<span class=\"badge badge-secondary\">Sigfox</span>"
+                        }
+                        
+                        $(".last-received-"+val+" .last-technologies").html(technologies);
+                        
+                        f = [{
+                                name: "general_deviceID", 
+                                math_operator: "",
+                                value: val, 
+                                relation_operator: "and"
+                            },
+                            {
+                                name: "general_bootID", 
+                                math_operator: "",
+                                value: data[0]["general"]["bootID"], 
+                                relation_operator: "and"
+                            }];
+    
+                        _filterObjectListJSON = JSON.stringify(f);
+                        
+                        $.getJSON( "https://dramco.be/api/multi-rat/", {filter: _filterObjectListJSON }, function( data ) {
+                            var lastID = 0;
+                            data.forEach(function(p, key){
+                                if(key == 0)
+                                    lastID = p["id"];
+                                else{
+                                    if(lastID-p["id"] < 50){
+                                        lastID = p["id"];
+                                    }else{
+                                        data.splice(key, 1);
+                                    }
+                                }
+                                
+                            });
+                            $(".last-received-"+val+" .last-received-number").text(data.length);
+                            
+                        });
+                        
+                    });
+                });
+                setTimeout(updateLastReceived, 30000);
+            }
+
+			function processFields(){
+			    $("#yaxis").val([]);
+			    $("#xaxis").val([]);
+			    $("#zaxis").val([]);
+			    
+			    technology = $("#technology").val();
+			   
+			    $("#xaxis span option, #yaxis span option, #zaxis span option").unwrap();
+			    
+			    
+			    
+			    $("#xaxis option:not(.for-" + technology +"), #yaxis option:not(.for-" + technology +"), #zaxis option:not(.for-" + technology +")").wrap('<span/>');
+			    $("#xaxis option .selectable, #yaxis option .selectable, #zaxis option .selectable").removeClass("selectable")
+			    $("#xaxis option.for-" + technology +", #yaxis option.for-" + technology +", #zaxis option.for-" + technology +"").addClass("selectable")
+			    $("#xaxis option.for-" + technology +".selected, #yaxis option.for-" + technology +".selected, #zaxis option.for-" + technology +".selected").attr("selected","selected");
+			    $("#xaxis, #yaxis, #zaxis").each(function(){
+			        var v = $(this).find("option.for-" + technology +".selected").first().val();
+			        $(this).val(v);
+			    });
+			    
+			    type = $(".graph-type").val();
+			    $(".for-graph").hide();
+			    $(".for-"+type).show();
+			    
+			    
+			}
+			function processFilter(fObj){
+			    
+			    var currentFilter; 
+			    if(fObj == undefined){
+			        currentFilter = $(".filter-1");
+			    }else{
+			        currentFilter = fObj.closest('.filter');
+			    }
+			    
+			    
+			        
+			    if(currentFilter.find(".filter-name option:selected").hasClass("filter-range")){
+			        currentFilter.find(".filter-value-select-wrapper").hide();
+			        currentFilter.find(".filter-value-range-wrapper").show();
+			    }
+			    if(currentFilter.find(".filter-name option:selected").hasClass("filter-select")){
+			        var valSelected = currentFilter.find(".filter-name option:selected").val().replace("technology", $("#technology").val());
+			        $.ajax({
+                        url: "//api.dramco.be/multi-rat/",
+                        dataType: 'json',
+                        data: { values: valSelected },
+                        async: false,
+                        success: function( data ) {
+                            var items = [];
+                            $.each( data, function( key, val ) {
+                                console.log(val);
+                                var text = "";
+                                if(val == "-128" && valSelected == "general_level")
+                                    text = "Outdoor";
+                                else if(val == "0" && valSelected == "general_moving")
+                                    text = "Static";
+                                else if(val == "1" && valSelected == "general_moving")
+                                    text = "Moving";
+                                else
+                                    text = val;
+                                items.push( "<option value='" + val + "'>" + text + "</option>" );
+                            });
+                            
+                            currentFilter.find(".filter-value-select-wrapper select").html(items.join(""));
+                            currentFilter.find(".filter-value-range-wrapper").hide();
+                            currentFilter.find(".filter-value-select-wrapper").show();
+                        }
+                    });
+			    }
+			}
+            function processRequest(){
+                var _filterName = $("#filter").val();;
+                var _filterPrep = "";
+                var _filterValue = "";
+                
+                $("#xaxis option.selected, #yaxis option.selected, #zaxis option.selected").removeClass("selected").removeAttr("selected");
+                $("#xaxis option:selected, #yaxis option:selected, #zaxis option:selected").addClass("selected");
+                
+                if($("#filter option:selected").hasClass("filter-range")){
+                    _filterPrep = $(".form-input-group-before-select").val();
+                    _filterValue = $(".filter-value.filter-range").val();
+                }else{
+                    _filterPrep = "eq";
+                    _filterValue = $(".filter-value.filter-select").val();
+                }
+                var _filterObjectList = Array();
+                $(".row.filter").each(function( index ) {
+                    var obj;
+                    var currentFilter = $(this);
+                    if(currentFilter.find(".filter-name option:selected").hasClass("filter-select")){
+                        obj = {
+                            name: currentFilter.find(".filter-name").val().replace("technology", $("#technology").val()), 
+                            math_operator: "",
+                            value: currentFilter.find(".filter-value-select").val(), 
+                            relation_operator:currentFilter.find(".filter-relation-operator").val()
+                        }
+                    }
+                    if(currentFilter.find(".filter-name option:selected").hasClass("filter-range")){
+                        var v = currentFilter.find(".filter-value-range").val()
+                        if(currentFilter.find(".filter-name").val() == "technology_energy")
+                            v *= 10;
+                        obj = {
+                            name: currentFilter.find(".filter-name").val().replace("technology", $("#technology").val()), 
+                            math_operator: currentFilter.find(".filter-math-operator").val(),
+                            value: v, 
+                            relation_operator: currentFilter.find(".filter-relation-operator").val()
+                        }
+                    }
+                    _filterObjectList.push(obj);
+                });
+
+                console.log(_filterObjectList);
+                _filterObjectListJSON = JSON.stringify(_filterObjectList);
+                
+                $.getJSON( "https://dramco.be/api/multi-rat/?limit=1000", {filter: _filterObjectListJSON }, function( data ) {
+					datax = [];
+					datay = [];
+					dataz = [];
+					
+					var i = 0;
+					var c = 0;
+					technology = $("#technology").val();
+					yaxisString = $("#yaxis").val();
+					xaxisString = $("#xaxis").val();
+					zaxisString = $("#zaxis").val();
+					
+					filter = $("#filter").val();
+					
+					yaxis = yaxisString.split(".");
+				    xaxis = xaxisString.split(".");
+				    zaxis = zaxisString.split(".");
+				    
+				    var translated = 0;
+				    var translation = [["NOT REGISTERED", "REGISTERED", "BUSY", "DENIED", "UNKNOWN", "ROAMING"],
+					                   ["NBIOT", "CATM1", "GSM"],
+					                   ["POWERDOWN", "ACTIVE", "PSM", "ERROR"],
+					                   ["SF7BW125", "SF8BW125", "SF9BW125", "SF10BW125", "SF11BW125", "SF12BW125"]
+					                  ];
+    						
+    				console.log(data);
+					data.forEach(function(obj){
+					    // First check for invalid conditions (-125, 8, 0, 0)
+					    if(!(technology == "nbiot" && obj["nbiot"]["conditions"]["qcsq"]["rsrp"] == 0 && obj["nbiot"]["conditions"]["qcsq"]["sinr"] == 8 && obj["nbiot"]["conditions"]["qcsq"]["rssi"] == -125 && obj["nbiot"]["conditions"]["qcsq"]["rsrq"] == 0) && obj["nbiot"]["closeTime"]<60000){
+    					    if(yaxis.length == 1)
+    						    datay[i] = obj[technology][yaxis[0]];
+    						else if(yaxis.length == 2)
+    						    datay[i] = obj[technology][yaxis[0]][yaxis[1]];
+    						else if(yaxis.length == 3)
+    						    datay[i] = obj[technology][yaxis[0]][yaxis[1]][yaxis[2]];
+    						else if(yaxis.length == 4)
+    						    datay[i] = obj[technology][yaxis[0]][yaxis[1]][yaxis[2]][yaxis[3]];
+    						    
+    						if(xaxis.length == 1)
+    						    datax[i] = obj[technology][xaxis[0]];
+    						else if(xaxis.length == 2)
+    						    datax[i] = obj[technology][xaxis[0]][xaxis[1]];
+    						else if(xaxis.length == 3)
+    						    datax[i] = obj[technology][xaxis[0]][xaxis[1]][xaxis[2]];
+    						else if(xaxis.length == 4)
+    						    datax[i] = obj[technology][xaxis[0]][xaxis[1]][xaxis[2]][xaxis[3]];
+    						    
+    					    if(zaxis.length == 1)
+    						    dataz[i] = obj[technology][zaxis[0]];
+    						else if(zaxis.length == 2)
+    						    dataz[i] = obj[technology][zaxis[0]][zaxis[1]];
+    						else if(zaxis.length == 3)
+    						    dataz[i] = obj[technology][zaxis[0]][zaxis[1]][zaxis[2]];
+    						else if(zaxis.length == 4)
+    						    dataz[i] = obj[technology][zaxis[0]][xaxis[1]][zaxis[2]][zaxis[3]];
+
+    						translation.forEach(function(item, first_index){
+    						    var second_index = translation[first_index].indexOf(dataz[i]);
+        						if( second_index >= 0){
+        						    dataz[i] = second_index;
+        						    translated = first_index;
+        						}
+    						});
+
+					    }
+					    if(xaxisString == "energyperbyte"){
+					        datax[i] = obj[technology]["energy"] / obj[technology]["payloadSize"];
+					    }
+					    if(yaxisString == "energyperbyte"){
+					        datay[i] = obj[technology]["energy"] / obj[technology]["payloadSize"];
+					    }
+					    if(zaxisString == "energyperbyte"){
+					        dataz[i] = obj[technology]["energy"] / obj[technology]["payloadSize"];
+					    }
+					    if(xaxisString == "timeAbs"){
+					        datax[i] = new Date(obj["time"]);
+					    }
+					    if(yaxisString == "timeAbs"){
+					        datay[i] = new Date(obj["time"]);
+					    }
+					    if(zaxisString == "timeAbs"){
+					        dataz[i] = new Date(obj["time"]);
+					    }
+					    if(xaxisString == "location"){
+					        datax[i] = obj["general"]["location"];
+					    }
+					    if(yaxisString == "location"){
+					        datay[i] = obj["general"]["location"];
+					    }
+					    if(zaxisString == "location"){
+					        dataz[i] = obj["general"]["location"];
+					    }
+						i++;
+						if(obj[technology]["callback"]>0)
+						    c++;
+					});
+                    
+                    $(".number-measurements").text(i);
+                    $(".number-callbacks").text(c);
+                    $(".number-percentage").text(Math.round(c/i*100*100)/100);
+                    
+                    console.log(datay);
+                    console.log(datax);
+                    
+                    var _tickmode = "auto";
+                    var _tickvals = null; 
+                    var _ticktext = null;
+                    if(translated > 0){
+                        _tickmode = "array";
+                        _tickvals = Object.keys(translation[translated]);
+                        _ticktext = translation[translated];
+                    }
+                    
+                    var trace;
+                    if($(".graph-type").val()=="boxplot"){
+                        var trace1 = {
+    					  y: datay,
+    					  mode: 'markers',
+    					  type: "box",
+    					  boxmean: true
+    					  
+    					};
+                    }
+                    if($(".graph-type").val() == "scatter"){
+    					var trace1 = {
+    					  x: datax,
+    					  y: datay,
+    					  mode: 'markers',
+    					  type: "scatter",
+    					  marker:{
+    					      colorscale: 'Portland',
+    					      color: dataz,
+    					      showscale: true,
+    					      colorbar:{
+    					        thickness: 10,
+    					        outlinewidth: 0,
+    					        tickmode: _tickmode, 
+    					        tickvals: _tickvals,
+    					        ticktext: _ticktext
+    					      }
+    					  },
+    					  
+    					};
+                    }
+					
+					var layout = { 
+                      height: 700,
+                      xaxis: {
+                        title: {
+                          text: $("#xaxis option.selectable:selected").first().text(),
+                        },
+                      },
+                      yaxis: {
+                        title: {
+                          text: $("#yaxis option.selectable:selected").first().text(),
+                        }
+                      }
+                    };
+                    
+                    var config = {responsive: true}
+
+					Plotly.newPlot('myDiv', [trace1], layout, config);
+				});
+            }
+            
+            
+            function bindActions(){
+
+                $("#graphSelector select.axis, .filter-value, .filter-math-operator").off().change(function(){
+				    processRequest();  
+				});
+				
+				$("#graphSelector select#technology, .graph-type").off().change(function(){
+				    processFields();
+				    processRequest();  
+				});
+				
+				$(".filter-name").off().change(function(){
+				    processFilter($(this));
+				    processRequest();  
+				});
+				
+				
+				$(".plus-button").off().click(function(event){
+				    event.preventDefault();
+				    
+				    previousFilterNumber = filterNumber;
+				    filterNumber++;
+                    
+                    var filter = $(this).attr("data-filter");
+                    
+                    console.log(filter);
+                    
+                    $("."+filter+" input:text").each(function() {
+                        $(this).attr('value', $(this).val());
+                    });
+
+                    // Add selected option to DOM for cloning
+    		        $("."+filter+" option").removeClass("selected");
+    		        $("."+filter+" option:selected").addClass("selected");
+    		        $("."+filter+" option[selected='selected']").removeAttr("selected");
+    		        $("."+filter+" .selected").attr("selected", "selected");
+		        
+				    let content = $("."+filter).html();
+				    
+				    var regex = new RegExp(filter, "gi");
+				    console.log(regex)
+				    content = content.replace(regex, "filter-"+filterNumber);
+				    
+                    $("."+filter).after("<div class=\"row filter-"+filterNumber+" filter\"></div>")
+                    $(".filter-"+filterNumber).html(content);
+                    $(".filter-"+filterNumber+" .input-group-temp").addClass("input-group");
+                    console.log(previousFilterNumber);
+                    $(".filter .button-wrapper .plus-button").hide();
+                    $(".filter").last().find(".plus-button").show();
+                    
+                    bindActions();
+			    });
+			    
+			    $(".minus-button").off().click(function(event){
+				    event.preventDefault();
+				    
+				    previousFilterNumber = filterNumber;
+				    
+				    var filter = $(this).attr("data-filter");
+				    var currentFilterNumber = parseInt(filter.replace("filter-",""));
+				    $("."+filter).remove();
+				    
+				    $(".filter").last().find(".plus-button").show();
+				    
+                    bindActions();
+			    });
+            }
+			$( document ).ready(function() {
+			    if($(".filter-1-name").val()=="time"){
+			        $(".filter-1-value-range").val(Math.round((new Date()).getTime()));
+			    }
+			    processRequest();
+				processFields();
+				processFilter();
+
+		        $("#xaxis").val("payloadSize");
+		        $("#yaxis").val("energyperbyte");
+		        $("#zaxis").val("energy");
+
+				updateLastReceivedPageLoad();
+				
+				bindActions();
+			});
+		</script>
+	</body>
+</html>
